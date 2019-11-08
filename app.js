@@ -6,12 +6,12 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true});
-// mongoose.connect('mongodb+srv://oscarcatari:' + 'mongo_pw' +'@cluster0-lhwoe.mongodb.net/test?retryWrites=true&w=majority', 
-// {
-//     useNewUrlParser: true, 
-//     useUnifiedTopology: true  
-// });
+//mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://oscarcatari:' + 'mongo_pw' +'@cluster0-lhwoe.mongodb.net/test?retryWrites=true&w=majority', 
+{
+    useNewUrlParser: true, 
+    useUnifiedTopology: true  
+});
 
 
 // For CORS errors
