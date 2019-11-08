@@ -1,10 +1,39 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const fs = require('fs');
+
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => { // jpeg, png
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}
+
+const upload = multer({
+    storage: storage,
+    limits:  {
+        fileSize: 1024 * 1024 * 2 // 2MB
+    },
+    fileFilter: fileFilter
+});
 
 const Category = require('../models/category');
 
 router.get('/', (req, res, next) => {
-    Category.find()
+    Category.find({}, '-_id')
+        .select('name image.contentType')
         .exec()
         .then(docs => {
             console.log(docs);
@@ -18,10 +47,46 @@ router.get('/', (req, res, next) => {
         });
 })
 
-router.post('/', (req, res, next) => {
+// Reset categories
+router.delete('/', (req, res, next) => {   
+    Category.deleteMany()
+        .exec()
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        })
+}); 
+
+router.get('/:categoryName', (req, res, next) => {
+    const name = req.params.categoryName
+    Category.findOne({name: name})
+        .exec()
+        .then(doc => {
+            console.log(doc);           
+            res.contentType(doc.image.contentType);
+            res.send(doc.image.data);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        });
+})
+
+router.post('/', upload.single('categoryImage'), (req, res, next) => {
+    console.log('Req: ' + req.file.mimetype);
     const category = new Category({
         name: req.body.name,
-        image: req.body.image
+        image: {
+            data: fs.readFileSync(req.file.path),
+            contentType: req.file.mimetype
+        }
     })
     category
         .save()
