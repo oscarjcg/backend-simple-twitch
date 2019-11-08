@@ -33,7 +33,7 @@ const Category = require('../models/category');
 
 router.get('/', (req, res, next) => {
     Category.find({}, '-_id')
-        .select('name image.contentType')
+        .select('name image')
         .exec()
         .then(docs => {
             console.log(docs);
