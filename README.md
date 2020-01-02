@@ -85,8 +85,8 @@
 
         * POST :
             * / : Crear una nueva categoria
-                name : Nombre de la categoria
-                categoryImage : Logotipo de la categoria
+                * name : Nombre de la categoria
+                * categoryImage : Logotipo de la categoria
 
 **Entorno de desarrollo**:
 * **Sistema operativo:** Windows 10 64 bits
