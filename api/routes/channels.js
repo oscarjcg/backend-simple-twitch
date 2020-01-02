@@ -48,11 +48,20 @@ router.get('/', (req, res, next) => {
 router.get('/:channelName', (req, res, next) => {
     const id = req.params.channelName;
 
-    //Channel.fi
-    res.status(200).json({
-        message: 'Channel GET Request ...',
-        id: id
-    });
+    Channel.findOne({name: id})
+        .exec()
+        .then(doc => {
+            console.log(doc);           
+            //res.contentType(doc.image.contentType);
+            //res.send(doc);res.status(200).json(docs);
+            res.status(200).json(doc);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        });
 });
 
 router.post('/', 
