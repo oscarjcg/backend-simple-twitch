@@ -2,7 +2,7 @@
 
 **Sevidor (En desarrollo)**: https://rocky-forest-64018.herokuapp.com/
 
-**Descripción**: Backend para una versión simplificada de [Twitch](https://www.twitch.tv/directory). Utiliza MongoDB para almacenar los datos de canales y categorias.
+**Descripción**: Backend para una versión simplificada de [Twitch](https://www.twitch.tv/directory) (Plataforma de live streaming centrada en juegos). Utiliza MongoDB para almacenar los datos de canales y categorias.
 
 **Características**:
 * API
